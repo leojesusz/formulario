@@ -1,8 +1,6 @@
 <?php
-// Inclusão da conexão
 require_once 'conexao.php';
 
-// Verifica se todos os campos obrigatórios foram enviados
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
     $email = trim($_POST['email'] ?? '');
@@ -12,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tipo_inscricao = $_POST['tipo-inscricao'] ?? '';
     $mensagem = trim($_POST['mensagem'] ?? '');
 
-    // Validações básicas
     if (
         empty($nome) || empty($email) || empty($telefone) ||
         empty($data_nascimento) || empty($genero) || empty($tipo_inscricao)
@@ -20,12 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Por favor, preencha todos os campos obrigatórios.');
     }
 
-    // Validação do e-mail
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         die('E-mail inválido.');
     }
 
-    // Inserção no banco
     try {
         $stmt = $pdo->prepare("INSERT INTO Inscrito (nome, email, telefone, data_nascimento, genero, tipo_inscricao, mensagem)
             VALUES (:nome, :email, :telefone, :data_nascimento, :genero, :tipo_inscricao, :mensagem)");
